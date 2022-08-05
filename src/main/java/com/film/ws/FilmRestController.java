@@ -28,20 +28,18 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("/film")
 @Api(value = "FilmRest", tags = "Servizio Rest Per I Film ")
 public class FilmRestController {
-	List<Film> filmslist = new ArrayList<Film>();
 
 	@ApiOperation(value = "Registrazione Nuovo Film", notes = "Permette la Registrazione di un Nuovo Film", response = String.class, produces = "application/json")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Inserimento Effettuato!") })
 	@PostMapping("/insert")
 	public ResponseEntity<String> save(@RequestBody Film f) {
-		filmslist.add(f);
 		FilmDao filmDao = new FilmDaoImpl();
 		filmDao.save(f);
 		return new ResponseEntity<String>("Inserimento effettuato", HttpStatus.OK);
 	}
 
 	
-	@ApiOperation(value = "Ricerca di tutti i film", notes = "Permette la Ricerca di tutti i film prodotti da un determinato regista", response = String.class, produces = "application/json")
+	@ApiOperation(value = "Ricerca film per regista", notes = "Permette la Ricerca di tutti i film prodotti da un determinato regista", response = String.class, produces = "application/json")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "ricerca effettuato!") })
 	@GetMapping("/findbyregista/{producer}")
 	public ResponseEntity<List<Film>> findByProducer(@PathVariable String producer) {
@@ -52,19 +50,28 @@ public class FilmRestController {
 
 	@ApiOperation(value = "Eliminazione di un film", notes = "Permette l'eliminazione di un film conoscendo il suo id", response = String.class, produces = "application/json")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "film eliminato con successo!") })
-	@DeleteMapping("/delete")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> delete(@RequestParam Long id) {
 		FilmDao filmDao = new FilmDaoImpl();
 		filmDao.deleteFilm(id);
 		return new ResponseEntity<String>("Eliminazione effettuata con successo", HttpStatus.OK);
 	}
-	
+	@ApiOperation(value = "update film", notes = "Permette l'update di un film conoscendo il suo id", response = String.class, produces = "application/json")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "film modificato con successo!") })
 	@PutMapping("/update/{id}")
 	public ResponseEntity<String> updateFilm(@RequestBody Film f,@PathVariable Long id){
 		FilmDao filmDao=new FilmDaoImpl();
 		filmDao.updateFilm(f,id);
 		return new ResponseEntity<String>("Aggiornamento effettuato",HttpStatus.ACCEPTED);
 		
+	}
+	@ApiOperation(value = "Lista completa di film nel db", notes = "Permette di ricuperare tutti i film all'interno del db", response = String.class, produces = "application/json")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "lista film recuperata con successo!") })
+	@GetMapping("/getallfilms")
+	public ResponseEntity<List<Film>> findAllFilms(){
+		FilmDao filmDao=new FilmDaoImpl();
+		List<Film> filmsList=(List<Film>) filmDao.getAllFilm();
+		return new ResponseEntity<List<Film>>(filmsList,HttpStatus.ACCEPTED);
 	}
 
 }

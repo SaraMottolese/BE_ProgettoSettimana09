@@ -26,6 +26,7 @@ public class FilmDaoImpl implements FilmDao {
 			String producerLowerCase = f.getProducer().toLowerCase();
 			f.setBoxOfficeReceipts(boxOfficeReceiptsCrypted);
 			f.setProducer(producerLowerCase);
+			filmsList.add(f);
 			entityTransaction.begin();
 			em.persist(f);
 			entityTransaction.commit();
@@ -77,6 +78,27 @@ public class FilmDaoImpl implements FilmDao {
 			em.close();
 		}
 
+	}
+
+	public List<Film> getAllFilm() {
+		List<Film> filmsList = new ArrayList<Film>();
+
+		em = JpaUtil.getEntityManagerFactory().createEntityManager();
+		EntityTransaction entityTransaction = em.getTransaction();
+
+		try {
+			entityTransaction.begin();
+			Query q_getAll = em.createQuery("Select f from Film f");
+			filmsList = q_getAll.getResultList();
+			entityTransaction.commit();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			entityTransaction.rollback();
+		} finally {
+			em.close();
+		}
+		return filmsList;
 	}
 
 }
