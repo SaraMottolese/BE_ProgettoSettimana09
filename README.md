@@ -1,13 +1,13 @@
-#PROGETTO FILM#
+# PROGETTO FILM
 
-##Gestione model
+## Gestione model
 -All'interno della classe Film ho inserito un campo id, questo è stato fatto in modo da rendere più agevole una 
 futura implementazione (ad esempio se dobbiamo creare una classe regista e procedere con una relazione manyToMany)
 -La proprietà boxOfficeReceipts viene trattata come una stringa e non come un double in quanto la traccia prevede
 che esso venga criptato, e il metodo BCrypt restituisce un oggetto di tipo stringa
 
-##Gestione Dao
--la traccia che ci e stata data prevedeva un solo metodo per la ricerca del film tramite il regista (producer),
+## Gestione Dao
+- la traccia che ci e stata data prevedeva un solo metodo per la ricerca del film tramite il regista (producer),
  per fare esercizio ho voluto implementare anche i metodi per il delete e l'update del film
  
  Per quanto riguarda la gestione della ricerca tramite regista ho gestito la gestione del case sensitive facendo sì
